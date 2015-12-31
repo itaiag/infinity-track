@@ -1,6 +1,5 @@
 package il.co.topq.rest;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
@@ -24,13 +23,13 @@ public class TaskListClient {
 	}
 
 	public TaskList addTaskList(int userId, TaskList taskList) throws Exception {
-		ResponseEntity<TaskList> response = template.postForEntity(base.toString() + "/users/" + userId + "/lists",
+		ResponseEntity<TaskList> response = template.postForEntity(base.toString() + "users/" + userId + "/lists",
 				taskList, TaskList.class);
 		return response.getBody();
 	}
 
 	public User addUser(User user) {
-		ResponseEntity<User> response = template.postForEntity(base.toString() + "/users/", user, User.class);
+		ResponseEntity<User> response = template.postForEntity(base.toString() + "users/", user, User.class);
 		return response.getBody();
 	}
 
@@ -40,7 +39,12 @@ public class TaskListClient {
 	}
 
 	public void deleteAllUsers() throws RestClientException, URISyntaxException {
-		template.delete(base.toString() + "users/");		
+		template.delete(base.toString() + "users/");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TaskList> getAllTaskList(int userId) {
+		return template.getForEntity(base.toString() + "users/" + userId + "/lists", List.class).getBody();
 	}
 
 }

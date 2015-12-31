@@ -29,7 +29,6 @@ public class UserResourceIT extends AbstractResourceTest {
 		client.addUser(user);
 		client.addUser(user);
 		assertThat(client.getAllUsers().size(), equalTo(3));
-	
 	}
 	
 	@Test

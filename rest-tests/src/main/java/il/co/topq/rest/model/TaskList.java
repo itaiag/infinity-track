@@ -14,6 +14,14 @@ public class TaskList {
 	@JsonIgnore
 	private Map<Integer, Task> tasks = new HashMap<Integer, Task>();
 
+	public TaskList(){
+		
+	}
+	
+	public TaskList(String title){
+		this.title = title;
+	}
+	
 	public int getId() {
 		return id;
 	}

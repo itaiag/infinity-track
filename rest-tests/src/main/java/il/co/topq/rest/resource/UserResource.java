@@ -2,6 +2,8 @@ package il.co.topq.rest.resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import il.co.topq.rest.model.Database;
 import il.co.topq.rest.model.User;
+import il.co.topq.rest.utils.IdUtils;
 
 @Component
 @Path("api/users")
@@ -32,7 +35,7 @@ public class UserResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public User addUser(User user) {
-		user.setId(getAvailableId());
+		user.setId(IdUtils.getAvailableId(db.getUsers()));
 		db.getUsers().put(user.getId(), user);
 		return user;
 	}
@@ -57,17 +60,4 @@ public class UserResource {
 		}
 	}
 
-	private int getAvailableId() {
-		if (db.getUsers().isEmpty()) {
-			return 0;
-		}
-		int maxId = 0;
-		for (Integer id : db.getUsers().keySet()) {
-			if (id > maxId) {
-				maxId = id;
-			}
-
-		}
-		return ++maxId;
-	}
 }
