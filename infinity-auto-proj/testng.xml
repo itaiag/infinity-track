@@ -1,9 +1,16 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Suite1" verbose="1">
-	<test name="Nopackage">
+	<test name="No Gui Tests">
 		<classes>
 			<class name="com.ExampleTests" />
 		</classes>
 	</test>
+	<test name="Gui Tests">
+		<classes>
+			<class name="com.google.GoogleTests" />
+		</classes>
+	</test>
+
+
 </suite>
