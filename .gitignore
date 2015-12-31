@@ -22,3 +22,6 @@ target/
 #Linux temp files
 .gitignore~
 *~
+
+#Tests
+test-output/
