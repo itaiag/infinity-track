@@ -1,7 +1,9 @@
 package il.co.topq.rest;
 
+import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.client.RestClientException;
 
 import il.co.topq.rest.Application;
 
@@ -29,6 +32,11 @@ public abstract class AbstractResourceTest {
 	public void setUp() throws Exception {
 		this.base = new URL("http://localhost:" + port + "/api/");
 		client = new TaskListClient(base);
+	}
+	
+	@After
+	public void tearDown() throws RestClientException, URISyntaxException{
+		client.deleteAllUsers();
 	}
 
 }

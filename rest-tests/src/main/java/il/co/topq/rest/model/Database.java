@@ -7,16 +7,12 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsersRespository {
+public class Database {
 	
 	private Map<Integer, User> users = new HashMap<Integer,User>();
 
 	public Map<Integer, User> getUsers() {
 		return users;
 	}
-	
-	
-	
-	
 	
 }
