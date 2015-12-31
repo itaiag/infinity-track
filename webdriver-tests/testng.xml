@@ -6,11 +6,9 @@
 			<class name="com.ExampleTests" />
 		</classes>
 	</test>
-	<!-- test name="Gui Tests">
+	<test name="Gui Tests">
 		<classes>
 			<class name="com.google.GoogleTests" />
 		</classes>
-	</test  -->
-
-
+	</test>
 </suite>
