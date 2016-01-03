@@ -1,9 +1,7 @@
-package il.co.topq.rest.resource;
+package il.co.topq.rest.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -12,21 +10,29 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.http.HttpException;
+import org.apache.http.client.HttpResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
-import il.co.topq.rest.model.UserService;
+import il.co.topq.rest.controllers.TaskListController;
 import il.co.topq.rest.model.User;
+import il.co.topq.rest.services.contract.UserService;
 import il.co.topq.rest.utils.IdUtils;
 
-@Component
+@RestController
 @Path("api/users")
-public class UserResource {
-	private final Logger log = LoggerFactory.getLogger(TaskListResource.class);
+public class UsersController {
+	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 
 	@Autowired
 	private UserService userService;
@@ -34,7 +40,8 @@ public class UserResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User addUser(User user) {
+	public User addUser(@RequestBody User user) {
+		logger.info("Add new user:" + user);
 		user.setId(IdUtils.getAvailableId(userService.getUsers()));
 		userService.getUsers().put(user.getId(), user);
 		return user;
@@ -44,6 +51,19 @@ public class UserResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> getAllUsers() {
 		return new ArrayList<User>(userService.getUsers().values());
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id: [0-9]+}")
+	public User getUserById(@PathParam("id") int id) {
+		logger.info("find user by id:" + id);
+		logger.info("users:" + userService.getUsers().get(id));
+		logger.info("out:" + userService.findById(id));
+		
+		final User user = userService.findById(id);
+		if (user != null) return user;
+		throw new WebApplicationException("User not found", 404);
 	}
 
 	@DELETE

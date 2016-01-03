@@ -43,4 +43,12 @@ public class TaskList {
 		return tasks;
 	}
 
+	public void put(Task task) {
+		tasks.put(tasks.size(), task);
+	}
+
+	public void delete(long taskId) {
+		tasks.remove(taskId);
+	}
+
 }

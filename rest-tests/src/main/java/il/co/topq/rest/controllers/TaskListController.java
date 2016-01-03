@@ -1,4 +1,4 @@
-package il.co.topq.rest.resource;
+package il.co.topq.rest.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,32 +10,33 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 
-import il.co.topq.rest.model.UserService;
 import il.co.topq.rest.model.TaskList;
 import il.co.topq.rest.model.User;
+import il.co.topq.rest.services.contract.UserService;
 import il.co.topq.rest.utils.IdUtils;
 
-@Component
+@RestController
 @Path("api/users/{user}/lists")
-public class TaskListResource {
+public class TaskListController {
 
-	private final Logger log = LoggerFactory.getLogger(TaskListResource.class);
+	private final Logger logger = LoggerFactory.getLogger(TaskListController.class);
 
 	@Autowired
-	private UserService db;
+	private UserService userService;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public TaskList addTaskList(@PathParam("user") int userId,TaskList taskList) {
-		final User user = db.getUsers().get(userId);
+		final User user = userService.getUsers().get(userId);
 		if (user == null){
 			return null;
 		}
@@ -44,10 +45,10 @@ public class TaskListResource {
 		return taskList;
 	}
 	
-	@Path("/{taskList: [0-9]+}")
 	@DELETE
+	@Path("/{taskList: [0-9]+}")
 	public void deleteTaskList(@PathParam("user") int userId,@PathParam("taskList") int taskListId){
-		final User user = db.getUsers().get(userId);
+		final User user = userService.getUsers().get(userId);
 		if (null == user){
 			return;
 		}
@@ -59,13 +60,31 @@ public class TaskListResource {
 	}
 	
 	@GET
-	public List<TaskList> getAllTaskLists(@PathParam("user") int userId){
-		final User user = db.getUsers().get(userId);
+	@Path("/{taskList: [0-9]+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public TaskList findTaskListById(@PathParam("user") int userId,@PathParam("taskList") int taskListId){
+		final User user = userService.getUsers().get(userId);
 		if (null == user){
+			throw new WebApplicationException("User not found", 404);
+		}
+		final TaskList taskList = user.getTaskLists().get(taskListId);
+		if (null == taskList){
+			throw new WebApplicationException("TaskList not found", 404);
+		}
+		return user.getTaskLists().get(taskListId);
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<TaskList> getAllTaskLists(@PathParam("user") int userId){
+		logger.info("get task lists for user:" + userId);
+		final User user = userService.findById(userId);
+		if (null == user || user.getTaskLists() == null){
 			return new ArrayList<TaskList>();
 		}
 		return new ArrayList<TaskList>(user.getTaskLists().values());
 	}
 	
 	
+
 }
