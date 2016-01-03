@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import il.co.topq.rest.model.Database;
+import il.co.topq.rest.model.UserService;
 import il.co.topq.rest.model.TaskList;
 import il.co.topq.rest.model.User;
 import il.co.topq.rest.utils.IdUtils;
@@ -29,7 +29,7 @@ public class TaskListResource {
 	private final Logger log = LoggerFactory.getLogger(TaskListResource.class);
 
 	@Autowired
-	private Database db;
+	private UserService db;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

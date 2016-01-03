@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import il.co.topq.rest.model.Database;
+import il.co.topq.rest.model.UserService;
 import il.co.topq.rest.model.User;
 import il.co.topq.rest.utils.IdUtils;
 
@@ -29,34 +29,34 @@ public class UserResource {
 	private final Logger log = LoggerFactory.getLogger(TaskListResource.class);
 
 	@Autowired
-	private Database db;
+	private UserService userService;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public User addUser(User user) {
-		user.setId(IdUtils.getAvailableId(db.getUsers()));
-		db.getUsers().put(user.getId(), user);
+		user.setId(IdUtils.getAvailableId(userService.getUsers()));
+		userService.getUsers().put(user.getId(), user);
 		return user;
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> getAllUsers() {
-		return new ArrayList<User>(db.getUsers().values());
+		return new ArrayList<User>(userService.getUsers().values());
 	}
 
 	@DELETE
 	public void deleteAllUsers() {
-		db.getUsers().clear();
+		userService.getUsers().clear();
 	}
 
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/{user: [0-9]+}")
 	public void deleteUser(@PathParam("user") int user) {
-		if (db.getUsers().containsKey(user)) {
-			db.getUsers().remove(user);
+		if (userService.getUsers().containsKey(user)) {
+			userService.getUsers().remove(user);
 		}
 	}
 
