@@ -33,7 +33,7 @@ public class TaskResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_add_new_task() {
+	public void testAddNewTask() {
 		logger.info("Test add new task...");
 		for (int i = 0; i < 10; i++)
 			assertThat(client.addTask(user.getId(), taskList.getId(), task).getId(), equalTo(i));
@@ -41,7 +41,7 @@ public class TaskResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_get_all_tasks() {
+	public void testGetAllTasks() {
 		logger.info("Test get all tasks...");
 		assertThat(client.getAllTasks(user.getId(), taskList.getId()).size(), equalTo(0));
 		
@@ -55,7 +55,7 @@ public class TaskResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_delete_single_tasks() {
+	public void testDeleteSingleTasks() {
 		logger.info("Test delete single tasks...");
 		assertThat(client.getAllTasks(user.getId(), taskList.getId()).size(), equalTo(0));
 		
@@ -70,7 +70,7 @@ public class TaskResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_delete_all_tasks() {
+	public void testDeleteAllTasks() {
 		logger.info("Test delete all tasks...");
 		assertThat(client.getAllTasks(user.getId(), taskList.getId()).size(), equalTo(0));
 		

@@ -22,7 +22,7 @@ public class UserResourceIT extends AbstractResourceTest {
 		user.setUserName("itaiag");		
 	}
 	@Test
-	public void test_add_new_users() {
+	public void testAddNewUser() {
 		logger.info("Testing add new user...");
 		for (int i = 0; i < 10; i++) 
 			assertThat(client.addUser(user).getId(), equalTo(i));
@@ -30,7 +30,7 @@ public class UserResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_get_all_users(){
+	public void testGetAllUsers(){
 		logger.info("Testing get all users...");
 		client.addUser(user);
 		assertThat(client.getAllUsers().size(), equalTo(1));
@@ -42,7 +42,7 @@ public class UserResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_delete_all_users() throws RestClientException, URISyntaxException{
+	public void testDeleteAllUsers() throws RestClientException, URISyntaxException{
 		logger.info("Testing delete all users...");
 		client.addUser(user);
 		client.deleteAllUsers();
@@ -52,7 +52,7 @@ public class UserResourceIT extends AbstractResourceTest {
 	}
 	
 	@Test
-	public void test_delete_single_user() throws RestClientException, URISyntaxException  {
+	public void testDeleteSingleUser() throws RestClientException, URISyntaxException  {
 		logger.info("Testing delete single users...");
 		assertThat(client.getAllUsers().size(), equalTo(0));
 		
