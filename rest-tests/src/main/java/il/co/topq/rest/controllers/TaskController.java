@@ -36,7 +36,7 @@ public class TaskController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Task addTask(@PathParam("user") int userId, @PathParam("taskListId") int taskListId, Task task) {
-		logger.info("Inset new task:" + task + 
+		logger.info("Insert new task:" + task + 
 			    "\ntaskList:" + taskListId + 
 			    "\nuserId:" + userId);
 		final User user = userService.getUsers().get(userId);
@@ -50,6 +50,27 @@ public class TaskController {
 		}
 		taskList.put(task);
 		return task;
+	}
+	
+	public Task updateTask(@PathParam("user") int userId, @PathParam("taskListId") int taskListId, Task task){
+		logger.info("Update existing task:" + task + 
+			    "\ntaskList:" + taskListId + 
+			    "\nuserId:" + userId);
+		final User user = userService.getUsers().get(userId);
+		if (user == null){
+			return null;
+		}
+		
+		final TaskList taskList = user.getTaskLists().get(taskListId);
+		if (taskList == null){
+			return null;
+		}
+		if (!taskList.getTasks().containsKey(task.getId())){
+			return null;
+		}
+		taskList.getTasks().put(task.getId(), task);
+		return task;
+
 	}
 	
 	@DELETE

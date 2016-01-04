@@ -13,18 +13,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.http.HttpException;
-import org.apache.http.client.HttpResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 
-import il.co.topq.rest.controllers.TaskListController;
 import il.co.topq.rest.model.User;
 import il.co.topq.rest.services.contract.UserService;
 import il.co.topq.rest.utils.IdUtils;

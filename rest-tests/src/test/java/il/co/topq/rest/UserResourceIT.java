@@ -19,7 +19,7 @@ public class UserResourceIT extends AbstractResourceTest {
 	
 	@BeforeClass
 	public static void onceExecutedBeforeAll() {
-		user.setUserName("itaiag");		
+		user.setFirstName("itaiag");		
 	}
 	@Test
 	public void testAddNewUser() {
