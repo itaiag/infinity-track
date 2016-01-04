@@ -35,7 +35,7 @@ public class TaskController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Task addTask(@PathParam("user") int userId, @PathParam("taskListId") long taskListId, Task task) {
+	public Task addTask(@PathParam("user") int userId, @PathParam("taskListId") int taskListId, Task task) {
 		logger.info("Inset new task:" + task + 
 			    "\ntaskList:" + taskListId + 
 			    "\nuserId:" + userId);
@@ -56,22 +56,35 @@ public class TaskController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{taskId: [0-9]+}")
-	public Map<String, Number> deleteTask(@PathParam("user") int userId, @PathParam("taskListId") long taskListId, @PathParam("taskId") long taskId) {
+	public void deleteTask(@PathParam("user") int userId, @PathParam("taskListId") int taskListId, @PathParam("taskId") int taskId) {
 		logger.info("Delete task by id:" + taskId + 
 			    "\ntaskList:" + taskListId + 
 			    "\nuserId:" + userId);
 		final User user = userService.getUsers().get(userId);
 		if (user == null){
-			return null;
+			return;
+		}
+		final TaskList taskList = user.getTaskLists().get(taskListId);
+		if (taskList == null){
+			return;
+		}
+		taskList.delete(taskId);
+	}
+	@DELETE
+	public void deleteAllTasks(@PathParam("user") int userId, @PathParam("taskListId") int taskListId) {
+		logger.info("Delete all tasks" + 
+			    "\ntaskList:" + taskListId + 
+			    "\nuserId:" + userId);
+		final User user = userService.getUsers().get(userId);
+		if (user == null){
+			return;
 		}
 		
 		final TaskList taskList = user.getTaskLists().get(taskListId);
 		if (taskList == null){
-			return null;
+			return;
 		}
-		int numberOfTasks = taskList.getTasks().size();
-		taskList.delete(taskId);
-		return ImmutableMap.of("deleted items",(numberOfTasks - taskList.getTasks().size()));
+		taskList.getTasks().clear();
 	}
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

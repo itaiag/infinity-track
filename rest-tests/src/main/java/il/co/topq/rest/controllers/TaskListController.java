@@ -58,6 +58,14 @@ public class TaskListController {
 		}
 		user.getTaskLists().remove(taskListId);
 	}
+	@DELETE
+	public void deleteTaskList(@PathParam("user") int userId){
+		final User user = userService.getUsers().get(userId);
+		if (null == user){
+			return;
+		}
+		user.getTaskLists().clear();
+	}
 	
 	@GET
 	@Path("/{taskList: [0-9]+}")

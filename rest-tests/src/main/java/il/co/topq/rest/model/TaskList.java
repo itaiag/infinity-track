@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import il.co.topq.rest.utils.IdUtils;
+
 public class TaskList {
 
 	private String title;
@@ -44,11 +46,11 @@ public class TaskList {
 	}
 
 	public void put(Task task) {
-		tasks.put(tasks.size(), task);
+		task.setId(IdUtils.getAvailableId(tasks));
+		tasks.put(task.getId(), task);
 	}
 
-	public void delete(long taskId) {
+	public void delete(int taskId) {
 		tasks.remove(taskId);
 	}
-
 }
